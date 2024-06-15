@@ -8,13 +8,13 @@ pipeline {
             }
         }
 
-        stage('Stop and Remove Existing Containers') {
-            steps {
-                script {
-                    sh "sudo docker-compose down"
-                }
-            }
-        }
+        // stage('Stop and Remove Existing Containers') {
+        //     steps {
+        //         script {
+        //             sh "sudo docker-compose down"
+        //         }
+        //     }
+        // }
 
         stage('Build Docker Images') {
             steps {
