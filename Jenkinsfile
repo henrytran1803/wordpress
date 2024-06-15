@@ -11,7 +11,7 @@ pipeline {
         stage('Stop and Remove Existing Containers') {
             steps {
                 script {
-                    sh "docker-compose down"
+                    sh "sudo docker-compose down"
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh "docker-compose build"
+                    sh "sudo docker-compose build"
                 }
             }
         }
@@ -27,7 +27,7 @@ pipeline {
         stage('Deploy Docker Compose') {
             steps {
                 script {
-                    sh "docker-compose up -d"
+                    sh "sudo docker-compose up -d"
                 }
             }
         }
