@@ -16,13 +16,13 @@ pipeline {
         //     }
         // }
 
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    sh "sudo docker-compose build"
-                }
-            }
-        }
+        // stage('Build Docker Images') {
+        //     steps {
+        //         script {
+        //             sh "sudo docker-compose build"
+        //         }
+        //     }
+        // }
 
         stage('Deploy Docker Compose') {
             steps {
