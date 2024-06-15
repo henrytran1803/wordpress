@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  app:
+    container_name: wordpress
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cicd/wordpress
+    ports:
+      - "8082:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app 
+
+  mysql:
+    container_name: wordpress-mysql
+    image: "mysql:8.0"
+    environment:
+      MYSQL_ROOT_PASSWORD: 18032002
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: 18032002
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    volumes:
+      - wordpress-mysql-data:/var/lib/mysql
+    networks:
+      - app
+
+volumes:
+  wordpress-mysql-data:
+
+networks:
+  app:
+    name: app
