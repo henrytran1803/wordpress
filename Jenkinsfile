@@ -8,7 +8,15 @@ pipeline {
             }
         }
 
-        stage('Build WordPress and MySQL Images') {
+        stage('Stop and Remove Existing Containers') {
+            steps {
+                script {
+                    sh "docker-compose down"
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
             steps {
                 script {
                     sh "docker-compose build"
@@ -16,19 +24,11 @@ pipeline {
             }
         }
 
-        stage('Deploy WordPress and MySQL') {
+        stage('Deploy Docker Compose') {
             steps {
                 script {
                     sh "docker-compose up -d"
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                sh "docker-compose down"
             }
         }
     }
