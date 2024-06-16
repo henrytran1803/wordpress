@@ -13,7 +13,9 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 script {
-                    sh 'git clone https://github.com/henrytran1803/wordpress.git /srv/www/wordpress'
+                    sh 'cd /srv/www/'
+                    sh 'ls'
+                    sh 'git clone https://github.com/henrytran1803/wordpress.git'
                 }
             }
         }
