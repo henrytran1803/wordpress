@@ -1,41 +1,22 @@
-name: PHP Composer
+name: CI/CD
 
 on:
   push:
-    branches: [ "master" ] # Kích hoạt workflow khi có thay đổi được đẩy lên nhánh "master"
-  pull_request:
-    branches: [ "master" ] # Kích hoạt workflow khi có yêu cầu kéo (pull request) tới nhánh "master"
-
-permissions:
-  contents: read # Cấp quyền đọc nội dung
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Chạy trên môi trường Ubuntu mới nhất
+    runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v4 # Bước này sử dụng hành động checkout để lấy mã nguồn của dự án
+      - uses: actions/checkout@main
+      - name: Create .env
+        run: |
+          echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env
+          echo 'DB_USER=${{ secrets.DB_USER }}' >> .env
+          echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
+          echo 'DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}' >> .env
 
-    - name: Check PHP Version
-      run: php -v # Kiểm tra phiên bản PHP được cài đặt trên runner
 
-    - name: Check Composer Version
-      run: composer -V # Kiểm tra phiên bản Composer được cài đặt trên runner
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict # Xác thực tệp composer.json và composer.lock để đảm bảo chúng hợp lệ
-
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3 # Sử dụng hành động cache để lưu trữ các gói Composer đã tải về
-      with:
-        path: vendor # Đường dẫn tới thư mục cần lưu trữ cache
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }} # Khóa để xác định cache, dựa trên hệ điều hành và hàm băm của tệp composer.lock
-        restore-keys: |
-          ${{ runner.os }}-php- # Khóa để khôi phục cache nếu không tìm thấy cache chính xác
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress # Cài đặt các gói phụ thuộc từ Composer, ưu tiên bản phân phối và không hiển thị tiến trình
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Thêm một script kiểm tra vào tệp composer.json, ví dụ: "test": "vendor/bin/phpunit"
+      - name: Build Docker
+        run: docker compose up --build -d 
