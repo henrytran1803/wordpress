@@ -1,15 +1,11 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Check Environment') {
-            steps {
-                script {
-                    sh '#!/bin/bash\nwhich sudo'
-                }
-            }
-        }
+    environment {
+        PATH = "${env.PATH}:/usr/bin:/bin"
+    }
 
+    stages {
         stage('Delete Old WordPress') {
             steps {
                 script {
