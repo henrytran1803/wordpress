@@ -1,19 +1,18 @@
-# Use the official WordPress image from Docker Hub
+# Sử dụng hình ảnh chính thức của WordPress từ Docker Hub
 FROM wordpress:latest
 
-# Copy the entire WordPress content into the container
-COPY ./wp-content /var/www/html/wp-content
+# Sao chép toàn bộ dự án WordPress vào container
+COPY ./ /var/www/html/
 
-# Set appropriate permissions for the WordPress content directory
+# Đặt quyền truy cập thích hợp cho thư mục WordPress
 USER root
-RUN chown -R www-data:www-data /var/www/html/wp-content
+RUN chown -R www-data:www-data /var/www/html
 
-# Switch back to the www-data user
+# Chuyển về người dùng www-data
 USER www-data
 
-# Set environment variables for the WordPress database connection
+# Thiết lập các biến môi trường cho kết nối cơ sở dữ liệu WordPress
 ENV WORDPRESS_DB_HOST=mysql:3306
 ENV WORDPRESS_DB_USER=wordpress
 ENV WORDPRESS_DB_PASSWORD=18032002
 ENV WORDPRESS_DB_NAME=wordpress
-

@@ -13,7 +13,7 @@ services:
       mysql:
         condition: service_healthy
     networks:
-      - app 
+      - app
 
   mysql:
     container_name: wordpress-mysql
@@ -31,6 +31,8 @@ services:
       start_period: 30s
     volumes:
       - wordpress-mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"  # Bổ sung cổng cho MySQL
     networks:
       - app
 

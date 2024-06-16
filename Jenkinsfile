@@ -2,32 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Stop and Remove Existing Containers') {
+        stage('Remote Setup') {
             steps {
                 script {
-                    sh "docker-compose down"
-                }
-            }
-        }
-
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    sh "docker-compose build"
-                }
-            }
-        }
-
-        stage('Deploy Docker Compose') {
-            steps {
-                script {
-                    sh "docker-compose up -d"
+                    sshagent(credentials: ['1']) {
+                        sh 'ssh parallels@10.211.55.4 "sudo rm -rf wordpress"'
+                        sh 'ssh parallels@10.211.55.4 "git clone https://github.com/henrytran1803/wordpress.git wordpress"'
+                        sh 'ssh parallels@10.211.55.4 "cd wordpress && sudo docker-compose build"'
+                    }
                 }
             }
         }
