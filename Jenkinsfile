@@ -13,7 +13,7 @@ pipeline {
                 sh 'rm -rf ~/Desktop/aaa/wordpress'
                 sh 'git clone https://github.com/henrytran1803/wordpress.git ~/Desktop/aaa/wordpress'
                 sh 'ls'
-                sh 'cd docker-compose build'
+                sh 'docker-compose build'
                 sh 'ls'
             }
         }
