@@ -1,7 +1,5 @@
-# Sử dụng hình ảnh chính thức của WordPress từ Docker Hub
 FROM wordpress:latest
 
-# Sao chép toàn bộ dự án WordPress vào container
 COPY ./ /var/www/html/
 
 # Đặt quyền truy cập thích hợp cho thư mục WordPress
