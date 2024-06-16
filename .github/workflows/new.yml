@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         source: "./*"  
-        target: "/target/directory/on/ec2"  
+        target: "/srv/www/"  
 
     - name: SSH into EC2 and deploy
       uses: appleboy/ssh-action@master
@@ -29,6 +29,6 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
-          cd /target/directory/on/ec2
+          cd /srv/www/
           docker-compose down  # Đảm bảo dừng và xóa các container cũ nếu chúng tồn tại
           docker-compose up --build -d  # Build và chạy các service trong background
