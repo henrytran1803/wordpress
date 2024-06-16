@@ -12,9 +12,12 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                sh 'su root -c "git clone https://github.com/henrytran1803/wordpress.git /srv/www/wordpress"'
+                script {
+                    sh 'sudo git clone https://github.com/henrytran1803/wordpress.git /srv/www/wordpress'
+                }
             }
         }
+
 
 
         // stage('Deploy WordPress') {
