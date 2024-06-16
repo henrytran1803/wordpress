@@ -1,15 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "${env.PATH}:/usr/bin:/bin"
-    }
-
     stages {
         stage('Delete Old WordPress') {
             steps {
                 script {
-                    sh '#!/bin/bash\nsudo rm -rf /srv/www/wordpress'
+                    sh '/usr/bin/sudo rm -rf /srv/www/wordpress'
                 }
             }
         }
@@ -17,7 +13,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 script {
-                    sh '#!/bin/bash\nsudo git clone https://github.com/henrytran1803/wordpress.git /srv/www/wordpress'
+                    sh '/usr/bin/sudo git clone https://github.com/henrytran1803/wordpress.git /srv/www/wordpress'
                 }
             }
         }
@@ -26,8 +22,8 @@ pipeline {
             steps {
                 script {
                     dir('/srv/www/wordpress') {
-                        sh '#!/bin/bash\nsudo docker-compose -f /srv/www/wordpress/docker-compose.yml build'
-                        sh '#!/bin/bash\nsudo docker-compose -f /srv/www/wordpress/docker-compose.yml up -d'
+                        sh '/usr/bin/sudo docker-compose -f /srv/www/wordpress/docker-compose.yml build'
+                        sh '/usr/bin/sudo docker-compose -f /srv/www/wordpress/docker-compose.yml up -d'
                     }
                 }
             }
