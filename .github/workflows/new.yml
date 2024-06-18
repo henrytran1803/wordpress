@@ -1,9 +1,9 @@
-name: Deploy to EC2new
+name: Deploy WordPress to EC2
 
 on:
   push:
     branches:
-      - master  
+      - master
 
 jobs:
   deploy:
@@ -28,17 +28,14 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
-        source: "./*"  
+        source: "./*"
         target: "/srv/www/wordpress/"
-
-
-    # - name: SSH into EC2 and deploy
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.EC2_HOST }}
-    #     username: ${{ secrets.EC2_USER }}
-    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
-    #     script: |
-    #       cd /srv/www/
-    #       docker-compose down  # Đảm bảo dừng và xóa các container cũ nếu chúng tồn tại
-    #       docker-compose up --build -d  # Build và chạy các service trong background
+  
+    - name: Restart web server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        script: |
+          sudo systemctl restart apache2 
